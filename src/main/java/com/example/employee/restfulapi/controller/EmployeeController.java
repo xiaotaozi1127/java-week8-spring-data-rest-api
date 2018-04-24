@@ -5,9 +5,7 @@ import com.example.employee.restfulapi.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,5 +34,10 @@ public class EmployeeController {
     @GetMapping("/employees/gender/{gender}")
     public List<Employee> GetEmployeesByGender(@PathVariable String gender){
         return employeeRepository.findByGender(gender);
+    }
+
+    @RequestMapping(value = "/employees", method = RequestMethod.POST)
+    public Employee CreateNewEmployee(@RequestBody Employee employee){
+        return employeeRepository.save(employee);
     }
 }
