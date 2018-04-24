@@ -36,8 +36,20 @@ public class EmployeeController {
         return employeeRepository.findByGender(gender);
     }
 
-    @RequestMapping(value = "/employees", method = RequestMethod.POST)
+    @PostMapping("/employees")
     public Employee CreateNewEmployee(@RequestBody Employee employee){
         return employeeRepository.save(employee);
+    }
+
+    @RequestMapping(value = "/employees/{employeeId}", method = RequestMethod.PUT)
+    public Employee UpdateEmployee(@PathVariable long employeeId, @RequestBody Employee employee){
+        Employee selectedEmployee = employeeRepository.findOne(employeeId);
+        selectedEmployee.setAge(employee.getAge());
+        selectedEmployee.setCompanyId(employee.getCompanyId());
+        selectedEmployee.setGender(employee.getGender());
+        selectedEmployee.setName(employee.getName());
+        selectedEmployee.setSalary(employee.getSalary());
+        employeeRepository.save(selectedEmployee);
+        return selectedEmployee;
     }
 }
