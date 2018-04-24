@@ -6,6 +6,8 @@ import com.example.employee.restfulapi.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,8 +55,12 @@ public class CompanyController {
     }
 
     @RequestMapping(value="/companies/{companyId}", method = RequestMethod.DELETE)
-    public void deleteCompany(@PathVariable long companyId){
-        companyRepository.delete(companyId);
+    public ResponseEntity deleteCompany(@PathVariable long companyId){
+        if(companyRepository.exists(companyId)){
+            companyRepository.delete(companyId);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity("cannot find such companyId ", HttpStatus.NOT_FOUND);
     }
 }
 
