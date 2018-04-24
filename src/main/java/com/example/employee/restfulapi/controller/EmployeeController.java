@@ -32,4 +32,9 @@ public class EmployeeController {
     public Page<Employee> GetEmployeesByPage(@PathVariable int page, @PathVariable int pageSize){
         return employeeRepository.findAll(new PageRequest(page, pageSize));
     }
+
+    @GetMapping("/employees/male")
+    public List<Employee> GetEmployeesByGender(){
+        return employeeRepository.findByGender("male");
+    }
 }
