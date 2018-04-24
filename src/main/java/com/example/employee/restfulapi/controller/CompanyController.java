@@ -46,4 +46,9 @@ public class CompanyController {
         Company flush = companyRepository.save(company);
         return flush;
     }
+
+    @RequestMapping(value = "/companies/{companyId}", method = RequestMethod.PUT)
+    public int updateCompany(@PathVariable long companyId, @RequestBody Company company){
+        return companyRepository.updateCompany(companyId, company.getCompanyName(), company.getEmployeesNumber());
+    }
 }
