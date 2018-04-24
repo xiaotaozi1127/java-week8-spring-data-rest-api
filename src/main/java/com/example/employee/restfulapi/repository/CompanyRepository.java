@@ -32,4 +32,6 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Modifying
     @Transactional
     int updateCompany(long companyId, String companyName, Integer employeesNumber);
+
+    void delete(long companyId);
 }
