@@ -13,54 +13,53 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/companies")
 public class CompanyController {
     //在此处完成Company API
     @Autowired
     CompanyRepository companyRepository;
 
-    @RequestMapping("/")
-    public String hello(){
-        return "hello";
-    }
-
-    @RequestMapping(value = "/companies", method = RequestMethod.GET)
+    @GetMapping
     public List<Company> GetAllCompanies(){
         return companyRepository.findAll();
     }
 
-    @RequestMapping(value = "/companies/{companyId}", method = RequestMethod.GET)
+    @GetMapping("/{companyId}")
     public Company GetCompanyById(@PathVariable long companyId){
         return companyRepository.findById(companyId);
     }
 
-    @RequestMapping(value = "/companies/{companyId}/employees", method = RequestMethod.GET)
+    @GetMapping("/{companyId}/employees")
     public List<Employee> GetEmployeesByCompanyId(@PathVariable long companyId){
         return companyRepository.findEmployeesByCompanyId(companyId);
     }
 
-    @RequestMapping(value = "/companies/page/{page}/pageSize/{pageSize}", method = RequestMethod.GET)
+    @GetMapping("/page/{page}/pageSize/{pageSize}")
     public Page<Company> GetCompaniesByPage(@PathVariable int page, @PathVariable int pageSize){
         return companyRepository.findAll(new PageRequest(page, pageSize));
     }
 
-    @RequestMapping(value = "/companies", method = RequestMethod.POST)
+    @PostMapping
     public Company CreateNewCompany(@RequestBody Company company){
-        Company flush = companyRepository.save(company);
-        return flush;
+        return companyRepository.save(company);
     }
 
-    @RequestMapping(value = "/companies/{companyId}", method = RequestMethod.PUT)
-    public int updateCompany(@PathVariable long companyId, @RequestBody Company company){
-        return companyRepository.updateCompany(companyId, company.getCompanyName(), company.getEmployeesNumber());
+    @PutMapping("/{companyId}")
+    public ResponseEntity updateCompany(@PathVariable long companyId, @RequestBody Company company){
+        if(companyRepository.exists(companyId)){
+            companyRepository.updateCompany(companyId, company.getCompanyName(), company.getEmployeesNumber());
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity("cannot find such companyId", HttpStatus.BAD_REQUEST)
     }
 
-    @RequestMapping(value="/companies/{companyId}", method = RequestMethod.DELETE)
+    @DeleteMapping(value="/{companyId}")
     public ResponseEntity deleteCompany(@PathVariable long companyId){
         if(companyRepository.exists(companyId)){
             companyRepository.delete(companyId);
             return new ResponseEntity(HttpStatus.OK);
         }
-        return new ResponseEntity("cannot find such companyId ", HttpStatus.NOT_FOUND);
+        return new ResponseEntity("cannot find such companyId", HttpStatus.BAD_REQUEST);
     }
 }
 
