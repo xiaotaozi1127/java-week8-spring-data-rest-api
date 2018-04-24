@@ -5,6 +5,8 @@ import com.example.employee.restfulapi.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,5 +53,14 @@ public class EmployeeController {
         selectedEmployee.setSalary(employee.getSalary());
         employeeRepository.save(selectedEmployee);
         return selectedEmployee;
+    }
+
+    @DeleteMapping("/employees/{employeeId}")
+    public ResponseEntity DeleteEmployee(@PathVariable long employeeId){
+        if(employeeRepository.exists(employeeId)){
+            employeeRepository.delete(employeeId);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity("cannot find such employeeId", HttpStatus.BAD_REQUEST);
     }
 }
