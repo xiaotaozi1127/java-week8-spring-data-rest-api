@@ -33,8 +33,8 @@ public class EmployeeController {
         return employeeRepository.findAll(new PageRequest(page, pageSize));
     }
 
-    @GetMapping("/employees/male")
-    public List<Employee> GetEmployeesByGender(){
-        return employeeRepository.findByGender("male");
+    @GetMapping("/employees/gender/{gender}")
+    public List<Employee> GetEmployeesByGender(@PathVariable String gender){
+        return employeeRepository.findByGender(gender);
     }
 }
