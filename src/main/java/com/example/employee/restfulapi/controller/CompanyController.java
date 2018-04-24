@@ -6,7 +6,6 @@ import com.example.employee.restfulapi.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,5 +39,11 @@ public class CompanyController {
     @RequestMapping(value = "/companies/page/{page}/pageSize/{pageSize}", method = RequestMethod.GET)
     public Page<Company> GetCompaniesByPage(@PathVariable int page, @PathVariable int pageSize){
         return companyRepository.findAll(new PageRequest(page, pageSize));
+    }
+
+    @RequestMapping(value = "/companies", method = RequestMethod.POST)
+    public Company CreateNewCompany(@RequestBody Company company){
+        Company flush = companyRepository.save(company);
+        return flush;
     }
 }

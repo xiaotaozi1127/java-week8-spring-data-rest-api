@@ -22,4 +22,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     @Override
     Page<Company> findAll(Pageable request);
+
+    @Override
+    Company save(Company entity);
 }
