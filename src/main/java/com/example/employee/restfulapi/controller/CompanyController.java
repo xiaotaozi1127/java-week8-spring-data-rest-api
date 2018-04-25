@@ -50,7 +50,7 @@ public class CompanyController {
             companyRepository.updateCompany(companyId, company.getCompanyName(), company.getEmployeesNumber());
             return new ResponseEntity(HttpStatus.OK);
         }
-        return new ResponseEntity("cannot find such companyId", HttpStatus.BAD_REQUEST)
+        return new ResponseEntity("cannot find such companyId", HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(value="/{companyId}")

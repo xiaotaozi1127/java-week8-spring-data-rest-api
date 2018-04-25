@@ -65,6 +65,10 @@ public class Employee {
         return gender;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setAge(Integer age) {
         this.age = age;
     }
